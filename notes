@@ -1,7 +1,9 @@
 **** MOTIVATION BEHIND REDUX ****
 
+[Dan Abramov is the creator of Redux]
 
 * Single page java apps need to handle more state that before
+* For more complicated Apps (FLUX may be a better option for simpler ones, REACT for even simpler apps)
 * Models can update models, then they update views - hard to reproduce bugs or add new features
 * Front End Devs need to handle server-side rendering, data fetches, perform route transitions etc etc
 * React currently mixes two concepts. Mutation & asynchronicity (mentos & coke)
@@ -194,3 +196,12 @@ function todos(state = [], action) {
 import { combineReducers, createStore } from 'redux'
 const reducer = combineReducers({ visibilityFilter, todos })
 const store = createStore(reducer)asynchronicity
+
+
+**** LEARNING RESOURCES ****
+
+Videos from Dan Abramov, REDUX creator
+- https://egghead.io/courses/getting-started-with-redux
+
+YouTube on REDUX basics (very good!)
+- https://www.youtube.com/watch?v=1w-oQ-i1XB8
