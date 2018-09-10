@@ -1,4 +1,5 @@
-Motivation Behind Redux:
+**** MOTIVATION BEHIND REDUX ****
+
 
 * Single page java apps need to handle more state that before
 * Models can update models, then they update views - hard to reproduce bugs or add new features
@@ -10,7 +11,7 @@ Motivation Behind Redux:
 
 
 
-Core Concepts
+**** CORE CONCEPTS ****
 
 Imagine an apps state as a plain object - it may look like this (This is a simple ‘todo’ list):
 
@@ -35,19 +36,56 @@ Example:
 { type: 'TOGGLE_TODO', index: 1 }
 { type: 'SET_VISIBILITY_FILTER', filter: 'SHOW_ALL' }
 
+-> NB every change is an action (an object), so we have a clear understanding of the changes.
+-> Think of actions like breadcrumbs, showing what has been changed.
+-> to tie STATE & ACTIONS together a FUNCTION called a REDUCER is required/written
+-> This function takes in all the ACTION arguments and returns the state of the app
+-> These are broken down to manage state of small bits of the app
+
+
+Example:
+
+function visibilityFilter(state = 'SHOW_ALL', action) {
+  if (action.type === 'SET_VISIBILITY_FILTER') {
+    return action.filter
+  } else {
+    return state
+  }
+}
+​
+function todos(state = [], action) {
+  switch (action.type) {
+    case 'ADD_TODO':
+      return state.concat([{ text: action.text, completed: false }])
+    case 'TOGGLE_TODO':
+      return state.map(
+        (todo, index) =>
+          action.index === index
+            ? { text: todo.text, completed: !todo.completed }
+            : todo
+      )
+    default:
+      return state
+  }
+}
+
+-> then another REDUCER is written to manage the entire apps state:
+
+
+function todoApp(state = {}, action) {
+  return {
+    todos: todos(state.todos, action),
+    visibilityFilter: visibilityFilter(state.visibilityFilter, action)
+  }
+}
+
+!!! The core concept is that you describe how the state of the app is over time in response to ACTION objects !!!
 
 
 
 
 
-
-
-
-
-
-
-
-Three Principles of Redux
+**** THE THREE PRINCIPLES OF REDUX ****
 
 
 1) SINGLE SOURCE OF TRUTH
