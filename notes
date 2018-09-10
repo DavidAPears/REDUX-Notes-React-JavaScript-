@@ -1,0 +1,158 @@
+Motivation Behind Redux:
+
+* Single page java apps need to handle more state that before
+* Models can update models, then they update views - hard to reproduce bugs or add new features
+* Front End Devs need to handle server-side rendering, data fetches, perform route transitions etc etc
+* React currently mixes two concepts. Mutation & asynchronicity (mentos & coke)
+* React tries to solve this by removing (direct) DOM manipulations & removing asynchronicity
+* REDUX attempts to make mutations predictable.
+
+
+
+
+Core Concepts
+
+Imagine an apps state as a plain object - it may look like this (This is a simple ‘todo’ list):
+
+Example:
+
+{
+  todos: [{
+    text: 'Eat food',
+    completed: true
+  }, {
+    text: 'Exercise',
+    completed: false
+  }],
+  visibilityFilter: 'SHOW_COMPLETED'
+}
+
+-> This OBJECT is like a MODEL, except there are no setters! I.e the State CAN NOT be set arbitrarily
+-> to CHANGE the state, we need to dispatch and ACTION
+-> this ACTION is a plan javascript OBJECT that described what happened - EG:
+
+{ type: 'ADD_TODO', text: 'Go to swimming pool' }
+{ type: 'TOGGLE_TODO', index: 1 }
+{ type: 'SET_VISIBILITY_FILTER', filter: 'SHOW_ALL' }
+
+
+
+
+
+
+
+
+
+
+
+
+
+Three Principles of Redux
+
+
+1) SINGLE SOURCE OF TRUTH
+
+The state of the WHOLE app is stored within an object tree in a SINGLE store.
+
+This makes it easier to:
+
+- Create universal apps
+- Easier to debug or inspect
+- To persist and apps state in development
+- Difficult functionality (undio/redo) can become simplified
+
+Example:
+
+console.log(store.getState())
+
+/* Prints
+{
+  visibilityFilter: 'SHOW_ALL',
+  todos: [
+    {
+      text: 'Consider using Redux',
+      completed: true,
+    },
+    {
+      text: 'Keep all state in a single tree',
+      completed: false
+    }
+  ]
+}
+*/
+
+
+2) STATE IS READ ONLY
+
+State can only be changed by emitting and *action*, (i.e an object describing what happened)
+
+This ensures:
+
+- Neither views not callbacks write directly to the state - they express an INTENT to transform the state.
+- All changes are centralised and happen 1. Y 1 in strict order
+- Actions can be logged, serialised and replayed for debugging/testing purposes.
+
+Example:
+
+store.dispatch({
+  type: 'COMPLETE_TODO',
+  index: 1
+})
+​
+store.dispatch({
+  type: 'SET_VISIBILITY_FILTER',
+  filter: 'SHOW_COMPLETED'
+})
+
+
+
+3) CHANGES ARE MADE WITH PURE FUNCTIONS
+
+To specify how the (single) state tree is transformed - one writes PURE REDUCERS
+
+Reducers are(pure) functions that take the previous state & action and return the next state.
+
+These functions return NEW STATE OBJECTS instead of mutating previous states.
+
+- Start with single (Pure) Reducer
+- As app grows split into smaller reducers that manage specific parts of the state tree
+- As (pure) Reducers are functions the order they are called in can be controlled or pass additional data
+
+Example:
+
+function visibilityFilter(state = 'SHOW_ALL', action) {
+  switch (action.type) {
+    case 'SET_VISIBILITY_FILTER':
+      return action.filter
+    default:
+      return state
+  }
+}
+​
+function todos(state = [], action) {
+  switch (action.type) {
+    case 'ADD_TODO':
+      return [
+        ...state,
+        {
+          text: action.text,
+          completed: false
+        }
+      ]
+    case 'COMPLETE_TODO':
+      return state.map((todo, index) => {
+        if (index === action.index) {
+          return Object.assign({}, todo, {
+            completed: true
+          })
+        }
+        return todo
+      })
+    default:
+      return state
+  }
+}
+​
+import { combineReducers, createStore } from 'redux'
+const reducer = combineReducers({ visibilityFilter, todos })
+const store = createStore(reducer)asynchronicity
