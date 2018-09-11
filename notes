@@ -10,6 +10,14 @@
 * React tries to solve this by removing (direct) DOM manipulations & removing asynchronicity
 * REDUX attempts to make mutations predictable.
 
+NB:
+
+Redux offers a tradeoff. It asks you to:
+
+- Describe application state as plain objects and arrays.
+- Describe changes in the system as plain objects.
+- Describe the logic for handling changes as pure functions.
+
 
 
 
@@ -208,3 +216,9 @@ YouTube on REDUX basics (very good!)
 
 High level info (in cartoon form)
 - https://code-cartoons.com/a-cartoon-intro-to-redux-3afb775501a6
+
+Things To Learn In React Before Attempting Redux:
+- https://www.robinwieruch.de/learn-react-before-using-redux/
+
+Dan Abramov 'You May Not Need REDUX' (Cases where redux is not best practice)
+- https://www.robinwieruch.de/learn-react-before-using-redux/
