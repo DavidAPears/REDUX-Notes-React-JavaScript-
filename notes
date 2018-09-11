@@ -3,8 +3,8 @@
 [Dan Abramov is the creator of Redux]
 
 * Single page java apps need to handle more state that before
-* For more complicated Apps (FLUX may be a better option for simpler ones, REACT for even simpler apps)
-* Models can update models, then they update views - hard to reproduce bugs or add new features
+* REDUX is for very complicated Apps (FLUX may be a better option for simpler ones, REACT for even simpler apps)
+* In REACT Models can update models, then they update views - hard to reproduce bugs or add new features
 * Front End Devs need to handle server-side rendering, data fetches, perform route transitions etc etc
 * React currently mixes two concepts. Mutation & asynchronicity (mentos & coke)
 * React tries to solve this by removing (direct) DOM manipulations & removing asynchronicity
@@ -12,7 +12,7 @@
 
 NB:
 
-Redux offers a tradeoff. It asks you to:
+Redux offers a tradeoff. In order to use it; it asks you to:
 
 - Describe application state as plain objects and arrays.
 - Describe changes in the system as plain objects.
@@ -23,7 +23,7 @@ Redux offers a tradeoff. It asks you to:
 
 **** CORE CONCEPTS ****
 
-Imagine an apps state as a plain object - it may look like this (This is a simple ‘todo’ list):
+Imagine an app's state as a plain object - it may look like this (This is a simple ‘todo’ list):
 
 Example:
 
@@ -40,7 +40,7 @@ Example:
 
 -> This OBJECT is like a MODEL, except there are no setters! I.e the State CAN NOT be set arbitrarily
 -> to CHANGE the state, we need to dispatch and ACTION
--> this ACTION is a plan javascript OBJECT that described what happened - EG:
+-> this ACTION is a plain javascript OBJECT that described what happened - EG:
 
 { type: 'ADD_TODO', text: 'Go to swimming pool' }
 { type: 'TOGGLE_TODO', index: 1 }
